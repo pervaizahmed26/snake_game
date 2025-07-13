@@ -1,6 +1,6 @@
 import pygame
 import sys
-from game import SnakeGame
+from game import SnakeGame, GameMode
 from menu import Menu
 
 def main():
@@ -11,7 +11,7 @@ def main():
     WINDOW_WIDTH = 800
     WINDOW_HEIGHT = 600
     screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-    pygame.display.set_caption("Snake Game")
+    pygame.display.set_caption("Enhanced Snake Game")
     
     # Initialize game objects
     game = SnakeGame(screen)
@@ -30,9 +30,10 @@ def main():
                 running = False
             
             if current_state == "menu":
-                action = menu.handle_event(event)
+                action, mode = menu.handle_event(event)
                 if action == "start_game":
                     current_state = "game"
+                    game.set_game_mode(mode)
                     game.reset()
                 elif action == "quit":
                     running = False
@@ -64,6 +65,7 @@ def main():
                 current_state = "game_over"
         
         elif current_state == "game_over":
+            game.render()
             game.render_game_over()
         
         pygame.display.flip()
